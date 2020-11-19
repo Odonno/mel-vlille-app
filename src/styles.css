@@ -1,2 +1,47 @@
-#root {
+html {
+  font-family: Lato, "Helvetica Neue", Verdana, sans-serif;
+}
+
+.visible {
+  visibility: visible;
+}
+.hidden {
+  visibility: hidden;
+}
+
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+
+#search-container {
+  text-align: center;
+}
+#search {
+  width: 300px;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+thead > tr {
+  background-color: #e20714;
+  color: white;
+  height: 40px;
+  font-size: 12px;
+}
+tbody > tr {
+  height: 40px;
+  font-size: 14px;
+}
+tbody > tr:nth-child(even) {
+  background-color: #eaeaea;
+}
+
+#no-result {
+  text-align: center;
 }

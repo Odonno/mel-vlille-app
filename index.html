@@ -1,13 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>TypeScript Vanilla Starter</title>
-</head>
+  </head>
 
-<body>
-    <div id="root">Loading...</div>
+  <body>
+    <div id="root">
+      <div id="search-container">
+        <input id="search" type="text" placeholder="Station recherchée" />
+      </div>
+
+      <table id="table" cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <th>Commune</th>
+            <th>Nom de la station</th>
+            <th>En service</th>
+            <th>Vélos disponibles</th>
+            <th>Places disponibles</th>
+          </tr>
+        </thead>
+
+        <tbody id="table-body"></tbody>
+      </table>
+
+      <div id="no-result" class="hidden">
+        Désolé, nous n’avons trouvé aucun résultat correspondant à votre
+        recherche.
+      </div>
+    </div>
     <script src="dist/main.js"></script>
-</body>
-
+  </body>
 </html>
