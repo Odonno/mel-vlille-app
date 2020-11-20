@@ -13,37 +13,41 @@ const tableElement = document.getElementById("table") as HTMLTableElement;
 const tableBodyElement = document.getElementById("table-body");
 const noResultElement = document.getElementById("no-result") as HTMLDivElement;
 
+const isSearchedPlace = (place: Place, search: string) =>{
+  const lowerSearch = search && search.toLowerCase();
+
+  if (!lowerSearch) {
+    return true;
+  }
+
+  return (
+    place.town.toLowerCase().includes(lowerSearch) ||
+    place.name.toLowerCase().includes(lowerSearch)
+  );
+};
+
+const getTableRow = (place: Place) => {
+  const statusOk = place.status === "EN SERVICE";
+  const statusCss = statusOk ? "green" : "red";
+  const bikesCss = place.numberBikesAvailable === 0 ? "red" : "";
+  const placesCss = place.numberPlacesAvailable === 0 ? "red" : "";
+
+  return `
+  <tr>
+      <td>${place.town}</td>
+      <td>${place.name}</td>
+      <td class="${statusCss}">${statusOk ? "Oui" : "Non"}</td>
+      <td class="${bikesCss}">${place.numberBikesAvailable}</td>
+      <td class="${placesCss}">${place.numberPlacesAvailable}</td>
+  </tr>
+  `;
+};
+
 if (searchElement && tableElement && tableBodyElement && noResultElement) {
-  const updateTable = (places: Place[], search: string = "") => {
-    const lowerSearch = search && search.toLowerCase();
-
+  const update = (places: Place[], search: string = "") => {
     const placesRows = places
-      .filter((p) => {
-        if (!lowerSearch) {
-          return true;
-        }
-
-        return (
-          p.town.toLowerCase().includes(lowerSearch) ||
-          p.name.toLowerCase().includes(lowerSearch)
-        );
-      })
-      .map((p) => {
-        const statusOk = p.status === "EN SERVICE";
-        const statusCss = statusOk ? "green" : "red";
-        const bikesCss = p.numberBikesAvailable === 0 ? "red" : "";
-        const placesCss = p.numberPlacesAvailable === 0 ? "red" : "";
-
-        return `
-        <tr>
-            <td>${p.town}</td>
-            <td>${p.name}</td>
-            <td class="${statusCss}">${statusOk ? "Oui" : "Non"}</td>
-            <td class="${bikesCss}">${p.numberBikesAvailable}</td>
-            <td class="${placesCss}">${p.numberPlacesAvailable}</td>
-        </tr>
-        `;
-      });
+      .filter((p) => isSearchedPlace(p, search))
+      .map((p) => getTableRow(p));
 
     const hasResult = placesRows.length > 0;
 
@@ -56,9 +60,9 @@ if (searchElement && tableElement && tableBodyElement && noResultElement) {
     .then((response) => response.json())
     .then((places: Place[]) => {
       searchElement.addEventListener("keyup", () => {
-        updateTable(places, searchElement.value);
+        update(places, searchElement.value);
       });
 
-      updateTable(places);
+      update(places);
     });
 }
